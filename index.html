@@ -3,12 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Web Page Title</title>
+    <title>WebSocket Communication</title>
 </head>
 <body>
+    <h1>WebSocket Communication</h1>
+ <iframe src="https://scratch.mit.edu/projects/966123505/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen></iframe>
 
-    <!-- Your iframe code goes here -->
-    <iframe src="https://scratch.mit.edu/projects/966123505/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen></iframe>
+    <!-- Add a div to display received messages -->
+    <div id="messageContainer"></div>
+    
+    <script>
+        // Replace the IP address and port with your WebSocket server details
+        const serverAddress = 'ws://81.240.94.97:7073';
+        const socket = new WebSocket(serverAddress);
 
+        // Event listener for when the connection is opened
+        socket.addEventListener('open', (event) => {
+            console.log('Connected to WebSocket server');
+        });
+
+        // Event listener for when a message is received from the server
+        socket.addEventListener('message', (event) => {
+            console.log('Message from server:', event.data);
+            
+            // Display the received message in the messageContainer div
+            const messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML = `<p>${event.data}</p>`;
+        });
+
+        // Event listener for when an error occurs
+        socket.addEventListener('error', (event) => {
+            console.error('WebSocket Error:', event);
+        });
+
+        // Event listener for when the connection is closed
+        socket.addEventListener('close', (event) => {
+            console.log('Connection closed:', event);
+        });
+
+        // Example: Sending a message to the server
+        function sendMessage() {
+            const messageToSend = 'Hello, WebSocket Server!';
+            socket.send(messageToSend);
+            console.log('Sent message to server:', messageToSend);
+        }
+    </script>
 </body>
 </html>
+
