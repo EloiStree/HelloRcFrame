@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joystick and Keyboard Events</title>
+  <style>
+    #output {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<div id="output"></div>
+
+<script>
+  // Gamepad API
+  window.addEventListener("gamepadconnected", (event) => {
+    console.log("Gamepad connected:", event.gamepad);
+    const controller = navigator.getGamepads()[event.gamepad.index];
+    const outputDiv = document.getElementById("output");
+
+    function handleGamepadInput() {
+      const xAxis = controller.axes[0];
+      const yAxis = controller.axes[1];
+      outputDiv.innerText = `Joystick X: ${xAxis.toFixed(2)}, Joystick Y: ${yAxis.toFixed(2)}`;
+    }
+
+    function pollGamepad() {
+      handleGamepadInput();
+      requestAnimationFrame(pollGamepad);
+    }
+
+    pollGamepad();
+  });
+
+  // Keyboard Events
+  let keystrokes = 0;
+  const outputDiv = document.getElementById("output");
+
+  window.addEventListener("keydown", (event) => {
+    outputDiv.innerText = `Key pressed: ${event.key}`;
+
+    keystrokes++;
+    if (keystrokes >= 10) {
+      outputDiv.innerText = "Reached 10 keystrokes!";
+    }
+  });
+</script>
+
+</body>
+</html>
